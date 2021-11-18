@@ -11,7 +11,7 @@ const app = express();
 const path = require('path');
 
 const corsOptions = {
-  origin: 'https://datingsiteang.web.app',
+  origin: 'https://datingsiteang.web.app/'
 };
 
 app.use(cors(corsOptions));

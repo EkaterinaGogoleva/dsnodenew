@@ -87,8 +87,8 @@ exports.signin = (req, res) => {
     });
 };
 
-/* *************************************************************************
-cама дописала*/
+
+// kirjoitin itse
 
 exports.findAll = (req, res) => {
   User.find((error, me) => {
