@@ -1,5 +1,6 @@
 //tutorial 1. Возможно использовать его вместо арр.js Тогда это указать в
 //package.json
+
 const mongoose = require('mongoose');
 const logger = require('morgan');
 require('dotenv').config();
@@ -29,6 +30,7 @@ app.get('/', (req, res) => {
 
 require('./routes/user.routes')(app);
 require('./routes/profile.routes')(app);
+require('./routes/gallery')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
@@ -42,7 +44,9 @@ mongoose
     //вместо закоментированного пути написала
     //'mongodb+srv://gogolevaekaterina:BazaDannih@cluster0.chas0.mongodb.net/datingsitedb?retryWrites=true&w=majority',
     process.env.MONGODB_URL,
-    { useNewUrlParser: true,
+    //promiseLibrary: require('bluebird') Из туь=ториала по добавлению фоток
+    { promiseLibrary: require('bluebird'),
+      useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false,
       useCreateIndex: true}
