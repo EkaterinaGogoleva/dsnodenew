@@ -1,6 +1,6 @@
 const path = require('path');
 const upload = require('../middlewares/upload');
-const dbConfig = require('../config/db');
+const dbConfig = require('../config/db.config');
 
 const MongoClient = require('mongodb').MongoClient;
 const GridFSBucket = require('mongodb').GridFSBucket;
@@ -11,26 +11,24 @@ const baseUrl = 'https://datingsitenode1.herokuapp.com/files/';
 
 const mongoClient = new MongoClient(url);
 
-const uploadFiles = async (req, res) => {
+
+const multipleUpload = async (req, res) => {
   try {
     await upload(req, res);
-    console.log(req.file);
+    console.log(req.files);
 
-    if (req.file == undefined) {
-      return res.send({
-        message: 'You must select a file.',
-      });
+    if (req.files.length <= 0) {
+      return res.send(`You must select at least 1 file.`);
     }
 
-    return res.send({
-      message: 'File has been uploaded.',
-    });
+    return res.send(`Files has been uploaded.`);
   } catch (error) {
     console.log(error);
 
-    return res.send({
-      message: 'Error when trying upload image: ${error}',
-    });
+    if (error.code === 'LIMIT_UNEXPECTED_FILE') {
+      return res.send('Too many files to upload.');
+    }
+    return res.send(`Error when trying upload many files: ${error}`);
   }
 };
 
@@ -101,7 +99,7 @@ const home = (req, res) => {
 
 module.exports = {
   getHome: home,
-  uploadFiles,
+  multipleUpload,
   getListFiles,
   download,
 };

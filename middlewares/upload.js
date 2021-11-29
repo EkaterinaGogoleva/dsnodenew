@@ -1,28 +1,24 @@
 const util = require('util');
+const path = require('path');
 const multer = require('multer');
-const { GridFsStorage } = require('multer-gridfs-storage');
-const dbConfig = require('../config/db');
 
-// eslint-disable-next-line no-var
-const storage = new GridFsStorage({
-  //указала здесь свой адрес
-  url: process.env.MONGODB_URL,
-  options: { useNewUrlParser: true, useUnifiedTopology: true },
-  file: (req, file) => {
+const storage = multer.diskStorage({
+  destination: (_req, file, callback) => {
+    callback(null, path.join(`${__dirname}/../public/images`));
+  },
+  filename: (req, file, callback) => {
     const match = ['image/png', 'image/jpeg'];
 
     if (match.indexOf(file.mimetype) === -1) {
-      const filename = `${Date.now()}-bezkoder-${file.originalname}`;
-      return filename;
+      const message = `${file.originalname} is invalid. Only accept png/jpeg.`;
+      return callback(message, null);
     }
 
-    return {
-      bucketName: dbConfig.imgBucket,
-      filename: `${Date.now()}-bezkoder-${file.originalname}`
-    };
+    const filename = `${Date.now()}-bezkoder-${file.originalname}`;
+    callback(null, filename);
   }
 });
 
-const uploadFiles = multer({ storage: storage }).single('file');
+const uploadFiles = multer({ storage: storage }).array('multi-files', 10);
 const uploadFilesMiddleware = util.promisify(uploadFiles);
 module.exports = uploadFilesMiddleware;
