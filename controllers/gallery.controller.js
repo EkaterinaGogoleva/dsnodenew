@@ -1,46 +1,107 @@
+const path = require('path');
+const upload = require('../middlewares/upload');
+const dbConfig = require('../config/db');
 
-const multer = require('multer');
-// eslint-disable-next-line no-unused-vars
-const Gallery = require('../models/Gallery.js');
-// eslint-disable-next-line no-unused-vars
-const mongoose = require('mongoose');
+const MongoClient = require('mongodb').MongoClient;
+const GridFSBucket = require('mongodb').GridFSBucket;
 
-//сохраняем фотки в файл index/fotos
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './public/images');
-  },
-  filename: (req, file, cb) => {
-    console.log(file);
-    const filetype = '';
-    if (file.mimetype === 'image/gif') {
-      filetype = 'gif';
-    }
-    if (file.mimetype === 'image/png') {
-      filetype = 'png';
-    }
-    if (file.mimetype === 'image/jpeg') {
-      filetype = 'jpg';
-    }
-    cb(null, 'image-' + Date.now() + '.' + filetype);
-  }
-});
+const url = process.env.MONGODB_URL;
 
-router.post('/', upload.single('file'), function(req, res, next) {
-  if (!req.file) {
-    return res.status(500).send({ message: 'Upload fail'});
-  } else {
-    req.body.imageUrl = 'http://192.168.0.7:3000/images/' + req.file.filename;
-    Gallery.create(req.body, function (err, gallery) {
-      if (err) {
-        console.log(err);
-        return next(err);
-      }
-      res.json(gallery);
+const baseUrl = 'https://datingsitenode1.herokuapp.com/files/';
+
+const mongoClient = new MongoClient(url);
+
+const uploadFiles = async (req, res) => {
+  try {
+    await upload(req, res);
+    console.log(req.file);
+
+    if (req.file == undefined) {
+      return res.send({
+        message: 'You must select a file.',
+      });
+    }
+
+    return res.send({
+      message: 'File has been uploaded.',
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.send({
+      message: 'Error when trying upload image: ${error}',
     });
   }
-});
+};
+
+const getListFiles = async (req, res) => {
+  try {
+    await mongoClient.connect();
+
+    const database = mongoClient.db(dbConfig.database);
+    const images = database.collection(dbConfig.imgBucket + '.files');
+
+    const cursor = images.find({});
+
+    if ((await cursor.count()) === 0) {
+      return res.status(500).send({
+        message: 'No files found!',
+      });
+    }
+
+    const fileInfos = [];
+    await cursor.forEach((doc) => {
+      fileInfos.push({
+        name: doc.filename,
+        url: baseUrl + doc.filename,
+      });
+    });
+
+    return res.status(200).send(fileInfos);
+  } catch (error) {
+    return res.status(500).send({
+      message: error.message,
+    });
+  }
+};
+
+const download = async (req, res) => {
+  try {
+    await mongoClient.connect();
+
+    const database = mongoClient.db(dbConfig.database);
+    const bucket = new GridFSBucket(database, {
+      bucketName: dbConfig.imgBucket,
+    });
+
+    const downloadStream = bucket.openDownloadStreamByName(req.params.name);
+
+    downloadStream.on('data', function (data) {
+      return res.status(200).write(data);
+    });
+
+    downloadStream.on('error', function (err) {
+      return res.status(404).send({ message: 'Cannot download the Image!' });
+    });
+
+    downloadStream.on('end', () => {
+      return res.end();
+    });
+  } catch (error) {
+    return res.status(500).send({
+      message: error.message,
+    });
+  }
+};
 
 
-// eslint-disable-next-line no-unused-vars
-const upload = multer({storage: storage});
+const home = (req, res) => {
+  return res.sendFile(path.join(`${__dirname}/../views/index.html`));
+};
+
+module.exports = {
+  getHome: home,
+  uploadFiles,
+  getListFiles,
+  download,
+};
