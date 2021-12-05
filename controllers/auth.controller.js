@@ -21,6 +21,15 @@ exports.signup = (req, res) => {
     profession: req.body.profession,
     about_myself: req.body.about_myself,
   });
+  //upload foto;
+  if (reg.files) {
+    const path = '';
+    req.files.forEach(function(files, index, arr) {
+      path = path + files.path + ',';
+    });
+    path = path.substring(0, path.lastIndexOf(','));
+    user.avatar=path;
+  };
 
   user.save((err, user) => {
     if (err) {
@@ -82,6 +91,7 @@ exports.signin = (req, res) => {
         education: user.education,
         profession: user.profession,
         about_myself: user.about_myself,
+        avatar: user.avatar,
         accessToken: token,
       });
     });

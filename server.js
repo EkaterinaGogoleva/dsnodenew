@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const path = require('path');
 
+
 const corsOptions = {
   origin: 'https://datingsiteang.web.app'
 };
@@ -30,7 +31,7 @@ app.get('/', (req, res) => {
 
 require('./routes/user.routes')(app);
 require('./routes/profile.routes')(app);
-require('./routes/gallery')(app);
+//require('./routes/gallery')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
@@ -68,6 +69,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-
+//upload foto
+app.use('/uploads', express.static('uploads'));
 module.exports = app;

@@ -2,7 +2,7 @@
 
 const { verifySignUp } = require('../middlewares');
 const authcontroller = require('../controllers/auth.controller');
-
+const upload = require('../middlewares/upload');
 module.exports = function (app) {
   app.use(function (req, res, next) {
     res.header(
@@ -18,8 +18,8 @@ module.exports = function (app) {
     authcontroller.signup
   );
 
-
-  app.post('/api/auth/signin', authcontroller.signin);
+  //upload avatar
+  app.post('/api/auth/signin', upload.array('avatar[]'), authcontroller.signin);
 
   //kirjoitin itse
   app.get('/api/auth/user', authcontroller.findAll);
