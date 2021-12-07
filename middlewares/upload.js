@@ -29,6 +29,7 @@ const uploadFilesMiddleware = util.promisify(uploadFiles);
 
 module.exports = uploadFilesMiddleware;
 */
+//tutorial 6
 const path = require('path');
 const multer = require('multer');
 

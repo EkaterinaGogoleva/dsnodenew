@@ -13,6 +13,7 @@ const path = require('path');
 
 
 const corsOptions = {
+  //origin: 'http://localhost:4200'
   origin: 'https://datingsiteang.web.app'
 };
 
