@@ -96,7 +96,7 @@ exports.signin = (req, res) => {
         education: user.education,
         profession: user.profession,
         about_myself: user.about_myself,
-        foto: user.foto,
+        //foto: user.foto,
         accessToken: token,
       });
     });

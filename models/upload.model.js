@@ -8,4 +8,5 @@ const singleFileSchema = new mongoose.Schema({
 });
 
 const SingleFile = mongoose.model('SingleFile', singleFileSchema);
+
 module.exports = SingleFile;

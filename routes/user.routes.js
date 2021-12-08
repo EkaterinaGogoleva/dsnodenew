@@ -22,13 +22,14 @@ module.exports = function (app) {
   app.post(
     '/api/auth/user',
     verifySignUp.checkDuplicateUsernameOrEmail,
-    authcontroller.signup
+    authcontroller.signup,
+    //upload.single('file'), singleFileUpload
   );
 
   //upload avatar
   //app.post('/api/auth/signin', authcontroller.signin);
   //Tutorial 7
-  app.post('/api/auth/signin', upload.single('file'), singleFileUpload, authcontroller.signin);
+  app.post('/api/auth/signin', authcontroller.signin);
   //Tutorial 6 multi
   //app.post('/api/auth/signin', upload.array('avatar[]'), authcontroller.signin);
   //Tutorial 7

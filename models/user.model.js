@@ -1,6 +1,8 @@
 //в дальнейшем модель можно заменить на мою
 const mongoose = require('mongoose');
 
+//const singleFileSchema = require('./upload.model');
+
 const UserSchema = new mongoose.Schema({
   username: {type: String, unique: true, required: true},
   email: String,
@@ -13,7 +15,7 @@ const UserSchema = new mongoose.Schema({
   education: String,
   profession: String,
   about_myself: {type: String, min: 0, max: 500},
-  foto: String,
+  //foto: {type: [singleFileSchema]},
 });
 
 const User = mongoose.model('User', UserSchema);
