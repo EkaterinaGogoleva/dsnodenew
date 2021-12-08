@@ -13,8 +13,8 @@ const path = require('path');
 
 
 const corsOptions = {
-  //origin: 'http://localhost:4200'
-  origin: 'https://datingsiteang.web.app'
+  origin: 'http://localhost:4200'
+  //origin: 'https://datingsiteang.web.app'
 };
 
 app.use(cors(corsOptions));
@@ -70,6 +70,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-//upload foto
-app.use('/uploads', express.static('uploads'));
+//upload foto Tutorial 6
+//app.use('/uploads', express.static('uploads'));
+// Tutorial 7
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 module.exports = app;

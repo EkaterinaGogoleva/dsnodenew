@@ -2,7 +2,14 @@
 
 const { verifySignUp } = require('../middlewares');
 const authcontroller = require('../controllers/auth.controller');
-const upload = require('../middlewares/upload');
+//Tutorial 6
+//const upload = require('../middlewares/upload');
+//tutorial 7
+const {upload} = require('../middlewares/upload');
+
+//tutorial 7
+const {singleFileUpload} = require('../controllers/gallery.controller');
+
 module.exports = function (app) {
   app.use(function (req, res, next) {
     res.header(
@@ -19,9 +26,15 @@ module.exports = function (app) {
   );
 
   //upload avatar
-  app.post('/api/auth/signin', upload.array('avatar[]'), authcontroller.signin);
-
+  //app.post('/api/auth/signin', authcontroller.signin);
+  //Tutorial 7
+  app.post('/api/auth/signin', upload.single('file'), singleFileUpload, authcontroller.signin);
+  //Tutorial 6 multi
+  //app.post('/api/auth/signin', upload.array('avatar[]'), authcontroller.signin);
+  //Tutorial 7
+  app.post('/singleFile', upload.single('file'), singleFileUpload);
   //kirjoitin itse
+
   app.get('/api/auth/user', authcontroller.findAll);
 
 };

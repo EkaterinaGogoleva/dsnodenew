@@ -1,3 +1,4 @@
+/* eslint-disable space-before-blocks */
 //tutorial 1
 //signup: create new User in database (role is user if not specifying role)
 const config = require('../config/auth.config');
@@ -21,15 +22,19 @@ exports.signup = (req, res) => {
     profession: req.body.profession,
     about_myself: req.body.about_myself,
   });
-  //upload foto;
-  if (reg.files) {
+  //upload foto Tutorial 6 single;
+  /*if (req.file){
+    user.foto = req.file.path;
+  }*/
+  //Tutorail 6 multi
+  /*if (req.files) {
     const path = '';
     req.files.forEach(function(files, index, arr) {
       path = path + files.path + ',';
     });
     path = path.substring(0, path.lastIndexOf(','));
-    user.avatar=path;
-  };
+    user.foto=path;
+  };*/
 
   user.save((err, user) => {
     if (err) {
@@ -91,7 +96,7 @@ exports.signin = (req, res) => {
         education: user.education,
         profession: user.profession,
         about_myself: user.about_myself,
-        avatar: user.avatar,
+        foto: user.foto,
         accessToken: token,
       });
     });

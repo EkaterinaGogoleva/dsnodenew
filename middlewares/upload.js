@@ -1,4 +1,5 @@
-/*const util = require('util');
+/*
+const util = require('util');
 const multer = require('multer');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const dbConfig = require('../config/db.config');
@@ -30,7 +31,7 @@ const uploadFilesMiddleware = util.promisify(uploadFiles);
 module.exports = uploadFilesMiddleware;
 */
 //tutorial 6
-const path = require('path');
+/*const path = require('path');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
@@ -46,13 +47,40 @@ const upload = multer({
   storage: storage,
   fileFilter: function(reg, file, callback) {
     if (
-      file.nimetype =='image.png' ||
-    file.nimetype =='image.jpg' ) {
+      file.mimetype =='image.png' ||
+    file.mimetype =='image.jpg' ) {
       callback(null, true);
     } else {
-      console.log('only jpg or pngfile supported!' );
+      console.log('only jpg or png file supported!' );
       callback(null, false);
     }
   }
 });
-module.exports = upload;
+module.exports = upload;*/
+
+//Tutorial 7
+'use strict';
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, 'uploads');
+  },
+  filename: function ( req, file, cb) {
+    cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname);
+  }
+});
+const filefilter = (req, file, cb) =>{
+  if (
+    file.mimetype ==='image/png' ||
+    file.mimetype ==='image/jpg' ||
+    file.mimetype ==='image/jpeg') {
+    cb(null, true);
+  } else {
+    console.log('only jpg or png or jpeg file supported!' );
+    callback(null, false);
+  }
+
+};
+const upload = multer({storage: storage, fileFilter: filefilter});
+module.exports = {upload};
