@@ -9,6 +9,6 @@ db.mongoose = mongoose;
 //вместо user.model написала
 db.user = require('./user.model');
 db.SingleFile = require('./upload.model');
-
+db.MultipleFile = require('./upload.model');
 
 module.exports = db;

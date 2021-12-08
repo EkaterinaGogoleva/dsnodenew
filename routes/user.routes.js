@@ -8,7 +8,7 @@ const authcontroller = require('../controllers/auth.controller');
 const {upload} = require('../middlewares/upload');
 
 //tutorial 7
-const {singleFileUpload} = require('../controllers/gallery.controller');
+const {singleFileUpload, multipleFileUpload, getallSingleFiles, getallMultipleFiles} = require('../controllers/gallery.controller');
 
 module.exports = function (app) {
   app.use(function (req, res, next) {
@@ -33,8 +33,9 @@ module.exports = function (app) {
   //app.post('/api/auth/signin', upload.array('avatar[]'), authcontroller.signin);
   //Tutorial 7
   app.post('/singleFile', upload.single('file'), singleFileUpload);
-  //kirjoitin itse
-
+  app.post('/multipleFiles', upload.array('files'), multipleFileUpload);
+  app.get('/getSingleFiles', getallSingleFiles);
+  app.get('/getMultipleFiles', getallMultipleFiles);
   app.get('/api/auth/user', authcontroller.findAll);
 
 };
