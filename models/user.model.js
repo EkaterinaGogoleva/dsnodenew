@@ -15,7 +15,8 @@ const UserSchema = new mongoose.Schema({
   education: String,
   profession: String,
   about_myself: {type: String, min: 0, max: 500},
-  //foto: {type: [singleFileSchema]},
+  //tutorial 8
+  foto: String,
 });
 
 const User = mongoose.model('User', UserSchema);

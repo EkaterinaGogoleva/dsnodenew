@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 });
 
 // routes
-
+//require('./routes/user.routes');
 require('./routes/user.routes')(app);
 require('./routes/profile.routes')(app);
 //require('./routes/gallery')(app);
@@ -74,4 +74,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use('/uploads', express.static('uploads'));
 // Tutorial 7
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+//tutorial 8
+
 module.exports = app;

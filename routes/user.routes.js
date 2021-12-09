@@ -6,9 +6,10 @@ const authcontroller = require('../controllers/auth.controller');
 //const upload = require('../middlewares/upload');
 //tutorial 7
 const {upload} = require('../middlewares/upload');
-
-//tutorial 7
 const {singleFileUpload, multipleFileUpload, getallSingleFiles, getallMultipleFiles} = require('../controllers/gallery.controller');
+
+//tutorial 8
+//const upload = require('../controllers/auth.controller');
 
 module.exports = function (app) {
   app.use(function (req, res, next) {
@@ -19,11 +20,11 @@ module.exports = function (app) {
     next();
   });
 
-  app.post(
-    '/api/auth/user',
+  app.post('/api/auth/user',
     verifySignUp.checkDuplicateUsernameOrEmail,
     authcontroller.signup,
-    //upload.single('file'), singleFileUpload
+    upload.single('foto')
+    // singleFileUpload
   );
 
   //upload avatar

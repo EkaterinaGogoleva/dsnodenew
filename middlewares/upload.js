@@ -59,7 +59,7 @@ const upload = multer({
 module.exports = upload;*/
 
 //Tutorial 7
-'use strict';
+/*'use strict';
 const multer = require('multer');
 
 const storage = multer.diskStorage({
@@ -82,5 +82,37 @@ const filefilter = (req, file, cb) =>{
   }
 
 };
+
 const upload = multer({storage: storage, fileFilter: filefilter});
+
+module.exports = {upload};*/
+
+//Tutorial 8
+
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function(req, foto, cb) {
+    cb(null, 'uploads');
+  },
+  filename: function ( req, foto, cb) {
+    cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + foto.originalname);
+  }
+});
+const filefilter = (req, foto, cb) =>{
+  if (
+    foto.mimetype ==='image/png' ||
+    foto.mimetype ==='image/jpg' ||
+    foto.mimetype ==='image/jpeg') {
+    cb(null, true);
+  } else {
+    console.log('only jpg or png or jpeg file supported!' );
+    callback(null, false);
+  }
+
+};
+
+
+const upload = multer({storage: storage, fileFilter: filefilter});
+
 module.exports = {upload};

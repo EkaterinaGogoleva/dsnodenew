@@ -8,6 +8,10 @@ const User = db.user;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
+//cскопировала из middlewares file изменила на foto
+/**/
+/*************************************** */
+
 exports.signup = (req, res) => {
   const user = new User({
     username: req.body.username,
@@ -21,6 +25,8 @@ exports.signup = (req, res) => {
     education: req.body.education,
     profession: req.body.profession,
     about_myself: req.body.about_myself,
+    //tutorial 8
+    foto: req.body.foto,
   });
   //upload foto Tutorial 6 single;
   /*if (req.file){
@@ -96,7 +102,7 @@ exports.signin = (req, res) => {
         education: user.education,
         profession: user.profession,
         about_myself: user.about_myself,
-        //foto: user.foto,
+        foto: user.foto,
         accessToken: token,
       });
     });
