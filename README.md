@@ -17,11 +17,12 @@ Database is hosted in MongoDB Atlas. Connection established in file "server.js"
 
 The .env file lets you customize your individual working environment variables.
 
-## Host
+## Host an running
 
 Server is hosted at https://datingsitenode1.herokuapp.com/
 Used Heroku.
 Now you can see backEnd on http:localhost:8080
+To run the application use the command "node server.js"
 ## Github
 
  git clone https://github.com/EkaterinaGogoleva/dsnodenew.git
