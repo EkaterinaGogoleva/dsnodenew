@@ -11,7 +11,8 @@ const app = express();
 const path = require('path');
 
 const corsOptions = {
-  origin: 'https://datingsiteang.web.app'
+ // origin: 'https://datingsiteang.web.app'
+  origin: 'http://localhost:4200'
 };
 
 app.use(cors(corsOptions));
